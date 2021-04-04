@@ -32,7 +32,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    double cost;
+    double qty = double.parse((_n).toString());
+    cost = qty*14.00;
     return new Scaffold(
+        resizeToAvoidBottomInset : false,
         appBar: AppBar(
           centerTitle: true,
           title: Text('Coffee App'),
@@ -96,7 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                   ),
-                  //Center(child: Text('Order Summary',style: TextStyle(fontSize: 26),)),
+
                   Spacer(),
                   new ListTile(
                     title: new RaisedButton(
@@ -122,14 +126,16 @@ class _MyHomePageState extends State<MyHomePage> {
                     title: new RaisedButton(
                       child: new Text("EMAIL ORDER"),
                       onPressed: () {
-                        if(valuefirst==true && valuesecond==true)
-                          _launchURL('example@gmail.com', 'Order Summary', 'Name: $enteredText, +Whipped Cream, +Chocolate, Quantity: $_n, Total: \$14.00');
-                        if(valuefirst==true && valuesecond==false)
-                          _launchURL('example@gmail.com', 'Order Summary', 'Name: $enteredText, +Whipped Cream, Quantity: $_n, Total: \$14.00');
-                        if(valuefirst==false && valuesecond==true)
-                          _launchURL('example@gmail.com', 'Order Summary', 'Name: $enteredText, +Chocolate, Quantity: $_n, Total: \$14.00');
-                        if(valuefirst==false && valuesecond==false)
-                          _launchURL('example@gmail.com', 'Order Summary', 'Name: $enteredText, Quantity: $_n, Total: \$14.00');
+                        if(_n==0)
+                          _launchURL('example@gmail.com', 'Order Summary', 'Name: $enteredText, Quantity: $_n, Total: \$*0.00');
+                        if(_n!=0 && valuefirst==true && valuesecond==true)
+                          _launchURL('example@gmail.com', 'Order Summary', 'Name: $enteredText, +Whipped Cream, +Chocolate, Quantity: $_n, Total: \$$cost');
+                        if(_n!=0 && valuefirst==true && valuesecond==false)
+                          _launchURL('example@gmail.com', 'Order Summary', 'Name: $enteredText, +Whipped Cream, Quantity: $_n, Total: \$$cost');
+                        if(_n!=0 && valuefirst==false && valuesecond==true)
+                          _launchURL('example@gmail.com', 'Order Summary', 'Name: $enteredText, +Chocolate, Quantity: $_n, Total: \$$cost');
+                        if(_n!=0 && valuefirst==false && valuesecond==false)
+                          _launchURL('example@gmail.com', 'Order Summary', 'Name: $enteredText, Quantity: $_n, Total: \$$cost');
 
                       },
                     ),
@@ -170,6 +176,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
 class NextPage extends StatefulWidget {
   final String value;
+  int cost;
 
 
   NextPage({Key key, this.value}) : super(key: key);
@@ -182,6 +189,9 @@ class _NextPageState extends State<NextPage> {
 
   @override
   Widget build(BuildContext context) {
+    double cost;
+    double qty = double.parse((_MyHomePageState._n).toString());
+    cost = qty*14.00;
     return new Scaffold(
       appBar: new AppBar(
         title: new Text("Order Summary"),
@@ -196,7 +206,10 @@ class _NextPageState extends State<NextPage> {
             Text('+Chocolate',style: TextStyle(fontSize: 26),),
           new Text("Quantity:",style: TextStyle(fontSize: 26),),
           new Text("${_MyHomePageState._n}",style: TextStyle(fontSize: 26),),
-          new Text("Total: \$ 14.00",style: TextStyle(fontSize: 26),),
+          if(_MyHomePageState._n==0)
+            new Text("Total: \$ 0.00",style: TextStyle(fontSize: 26),),
+          if(_MyHomePageState._n!=0)
+            new Text("Total: \$ $cost",style: TextStyle(fontSize: 26),),
           new Text("Thank You",style: TextStyle(fontSize: 26),),
         ],
       ),
